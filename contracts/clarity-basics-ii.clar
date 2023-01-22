@@ -86,3 +86,18 @@
         user-balance: new-user-balance
     })
 )
+
+(define-data-var original {user-principal: principal, user-name: (string-ascii 24), user-balance: uint} 
+        {
+        user-principal: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM,
+        user-name: "Jacob Brown",
+        user-balance: u100
+    }
+)
+
+(define-public (merge-principal (new-user-principal principal)) 
+    (ok (merge 
+        (var-get original)
+        {user-pricipal: new-user-principal}
+    ))
+)
