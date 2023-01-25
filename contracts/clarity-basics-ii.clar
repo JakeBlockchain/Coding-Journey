@@ -69,35 +69,49 @@
 ;; Example contract call looks like
 ;; (contract-call? .clarity-basics-ii change-age u10)
 
-;; Day 12  - Tuples & Merging
-;; Tuples are immutable and can not be changed dynamically once they are set
-;; To change a tuple value, you must replace it with a seperate new tuple
+;; Day 12 - Tuples & Merging
 (define-read-only (read-tuple)
     {
         user-principal: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM,
-        user-name: "Jacob Brown",
-        user-balance: u100
+        user-name: "JakeBlockchain",
+        user-balance: u10
     }
-)
-(define-public (write-tuple-i (new-user-principal principal) (new-user-name (string-ascii 24)) (new-user-balance uint)) 
+ )
+ (define-public (write-tuple-i (new-user-principal principal) (new-user-name (string-ascii 24)) (new-user-balance uint)) 
     (ok {
         user-principal: new-user-principal,
         user-name: new-user-name,
-        user-balance: new-user-balance
+        user-balance: new-user-balance        
     })
-)
-
-(define-data-var original {user-principal: principal, user-name: (string-ascii 24), user-balance: uint} 
-        {
+ )
+ (define-data-var original {user-principal: principal, user-name: (string-ascii 24), user-balance: uint}
+    {
         user-principal: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM,
-        user-name: "Jacob Brown",
-        user-balance: u100
+        user-name: "JakeBlockchain",
+        user-balance: u10
     }
 )
-
+(define-read-only (read-original) 
+    (var-get original)
+)
 (define-public (merge-principal (new-user-principal principal)) 
     (ok (merge 
         (var-get original)
-        {user-pricipal: new-user-principal}
+        {user-principal: new-user-principal}
     ))
+)
+(define-public (merge-user-name (new-user-name (string-ascii 24))) 
+    (ok (merge 
+        (var-get original)
+        {user-name: new-user-name}
+    ))
+)
+(define-public (merge-all (new-user-principal principal) (new-user-name (string-ascii 24)) (new-user-balance uint)) 
+    (ok (merge 
+        (var-get original)
+    {
+        user-principal: new-user-principal,
+        user-name: new-user-name,
+        user-balance: new-user-balance        
+    })
 )
