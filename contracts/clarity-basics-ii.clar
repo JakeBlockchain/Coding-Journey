@@ -123,3 +123,60 @@
 (define-read-only (check-admin) 
     (is-eq admin tx-sender)
 )
+
+;; Day 14 - Conditionals 1 (asserts)
+;; Asserts are conditionals that when the assert function fails. It reverts the entire transaction.
+;;Best Practice - define-constants are put at thee top of a contract
+(define-read-only (show-asserts (num uint))
+    (ok (asserts! (> num u2) (err u1)))
+)
+(define-constant err-too-large (err u1))
+(define-constant err-too-small (err u2))
+(define-constant err-not-auth (err u3))
+(define-constant admin-one tx-sender)
+;; Read only function that checks the transcction sender is the contract admin.
+(define-read-only (assert-admin) 
+    (ok (asserts! (is-eq tx-sender admin-one) err-not-auth))
+)
+
+;; Day 15  - Begin
+;; Set & Say Hello
+;; Counter increment by even numbers
+
+(define-data-var hello-name (string-ascii 48) "Timothy")
+;; @desc - This function allows a user to provide a name, which, if different, changes a name variable and returns new name
+;; @param - new-name (string-ascii 48) that represents the new name
+(define-public (set-and-say-hello (new-name (string-ascii 48)))
+    (begin 
+        ;; Assert that name is not empty
+        (asserts! (not (is-eq "" new-name)) (err u1))
+
+        ;; Assert that name is not equal to current name
+        (asserts! (not (is-eq (var-get hello-name) new-name)) (err u2))
+
+        ;; Var-set new name
+        (var-set hello-name new-name)
+
+        ;; Say hello with new name
+        (ok (concat "Hello " (var-get hello-name)))
+    ))
+    (define-read-only (get-hello-name) 
+        (var-get hello-name)
+    )
+
+    (define-data-var counter uint u0)
+    (define-read-only (read-counter) 
+        (var-get counter)
+    )
+
+;; @desc - This functon allows a user to increase the counter by only an even amount
+;; @param - add-num: uint the user submits to add to the counter
+(define-public (increment-counter-event (add-num uint)) 
+    (begin 
+
+        ;; Assert the add num is even
+        (asserts! (is-eq u0 (mod add-num u2)) (err "Not an even number"))
+        ;; Increment and var-set counter
+        (ok (var-set counter (+ (var-get counter) add-num)))
+     )
+)
