@@ -21,7 +21,49 @@
 ;; Read Functions ;;
 ;;;;;;;;;;;;;;;;;;;;
 
+;; Get community billboard
+(define-read-only (get-billboard) 
+    (var-get billboard)
+)
+
+;; Get next user
+(define-read-only (get-next-user) 
+    (var-get next-user)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Write Functions ;;
 ;;;;;;;;;;;;;;;;;;;;;
+
+;; Update billboard
+;; @desc - function users by next-user to update the community billboard
+;;@param - new-user-name: (string-ascii 24)
+(define-public (update-billboard (updated-user-name (string-ascii 24))) 
+    (begin
+    ;; Assert that tx-sender is next-user (approved by admin)
+
+    ;; Assert that updated-user-name is not empty
+
+    ;; Var-set billboard with new keys
+
+    (ok true)
+    )
+)
+
+;; Admin Set New User
+;;@desc - functiuon used by admin to set / give permission to next user
+;;@param - updated-user-principal: principal
+(define-public (admin-set-new-user (updated-user-principal principal)) 
+    (begin 
+
+        ;; Assert that tx-sender is admin
+
+        ;; Assert that Updated-user-principal is NOT admin
+
+        ;; Assert that updated-user-principal is NOT current next-user
+
+        ;; Var-set next-user with updated-user-principal
+
+    (ok true)
+    )
+)
