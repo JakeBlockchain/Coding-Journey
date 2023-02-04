@@ -48,9 +48,9 @@
 (define-public (update-billboard (updated-user-name (string-ascii 24))) 
     (begin
     ;; Assert that tx-sender is next-user (approved by admin)
-    (asserts! (is-eq tx-sender (var-get next-user)) (ERR-TX-SENDER-NOT-NEXT-USER))
+    (asserts! (is-eq tx-sender (var-get next-user)) ERR-TX-SENDER-NOT-NEXT-USER)
     ;; Assert that updated-user-name is not empty
-    (asserts! (not (is-eq updated-user-name "")) (ERR-UPDATED-USER-NAME-IS-EMPTY))
+    (asserts! (not (is-eq updated-user-name "")) ERR-UPDATED-USER-NAME-IS-EMPTY)
     ;; Var-set billboard with new keys
     (ok (var-set billboard {
         new-user-principal: tx-sender,
@@ -67,12 +67,14 @@
     (begin 
 
         ;; Assert that tx-sender is admin
-        (asserts! (is-eq tx-sender admin) (ERR-TX-SENDER-ISNT-ADMIN))
+        (asserts! (is-eq tx-sender admin) ERR-TX-SENDER-ISNT-ADMIN)
         ;; Assert that Updated-user-principal is NOT admin
-        (asserts! (not (is-eq tx-sender updated-user-principal)) (ERR-NEXT-USER-PRINCIPAL-IS-ADMIN))
+        (asserts! (not (is-eq tx-sender updated-user-principal)) ERR-NEXT-USER-PRINCIPAL-IS-ADMIN)
         ;; Assert that updated-user-principal is NOT current next-user
-        (asserts! (not (is-eq updated-user-principal (var-get next-user))) (ERR-UPDATED-USER-IS-NEXT-USER))
+        (asserts! (not (is-eq updated-user-principal (var-get next-user))) ERR-UPDATED-USER-IS-NEXT-USER)
         ;; Var-set next-user with updated-user-principal
         (ok (var-set next-user updated-user-principal))
     )
 )
+
+;; Completed on Day 19 of #100DaysOfClarity
