@@ -67,9 +67,6 @@
     (ok (try! input))
 )
 
-
-
-
 ;;;;; Versions of unwrap function ::;;;;;
 ;; Unwrap! - Accepts optional & response
 ;; Unwrap-err! - Accepts response
@@ -78,3 +75,23 @@
 ;; Try! - Accepts optional and response
 
 
+;; Day 23 - Default-to / Get 
+(define-constant example-tuple {
+    example-bool: true,
+    example-num: none,
+    example-string: none,
+    example-principal: tx-sender
+})
+
+(define-read-only (read-example-tuple) 
+    example-tuple
+)
+(define-read-only (read-example-bool) 
+    (get example-bool example-tuple)
+)
+(define-read-only (read-example-num) 
+    (default-to u10 (get example-num example-tuple))
+)
+(define-read-only (read-example-string) 
+    (default-to "JakeBlockchain" (get example-string example-tuple))
+)
